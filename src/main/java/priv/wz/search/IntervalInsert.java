@@ -19,32 +19,33 @@ public class IntervalInsert {
         // rightIndex 作为离newInterval[1]最近的第一个小于等于 newInterval[1] 的位置
         int leftIndex = lessEqual(flat, newInterval[0]);
         int rightIndex = lessEqual(flat, newInterval[1]);
-        // 双数在两个间隔中间，单数在间隔内
-        if (leftIndex == flat.length - 1) {
-            if (flat[flat.length - 1] == newInterval[0]) {
-                // 连在最后并且合并
-                int[][] ans = new int[intervals.length][2];
-                for (int i = 0; i < intervals.length - 1; i++) {
-                    System.arraycopy(intervals[i], 0, ans[i], 0, 2);
+        // 分两种情况：1、没有合并 2、有合并
+        if (rightIndex == -1
+                || leftIndex == flat.length - 1 && newInterval[0] != flat[flat.length - 1]
+                || leftIndex == rightIndex && newInterval[0] != flat[leftIndex]) {
+            int[][] ans = new int[intervals.length + 1][2];
+            for (int i = 0; i < intervals.length; i++) {
+                if (i * 2 == leftIndex) {
+                    ans[i][0] = newInterval[0];
+                    ans[i][1] = newInterval[1];
+                } else {
+                    ans[i][0] = flat[i * 2];
+                    ans[i][1] = flat[i * 2 + 1];
                 }
-                int[] last = new int[]{intervals[intervals.length - 1][0], newInterval[1]};
-                ans[ans.length - 1] = last;
-                return ans;
-            } else {
-                // 连在最后不合并
-                int[][] ans = new int[intervals.length + 1][2];
-                for (int i = 0; i < intervals.length; i++) {
-                    System.arraycopy(intervals[i], 0, ans[i], 0, 2);
-                }
-                ans[intervals.length] = newInterval;
-                return ans;
             }
-        }
-        if (rightIndex == 0) {
-            
-        }
-        if (rightIndex == -1) {
-
+        } else {
+            // 最左和最右好像需要特殊处理一下
+            if (rightIndex % 2 == 0) {
+                rightIndex++;
+            }
+            if (leftIndex % 2 != 0) {
+                if (flat[leftIndex] == newInterval[0]) {
+                    leftIndex--;
+                } else {
+                    leftIndex++;
+                    flat[leftIndex] = newInterval[0];
+                }
+            }
         }
         return null;
     }
