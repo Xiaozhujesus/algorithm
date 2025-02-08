@@ -46,14 +46,15 @@ public class DFS {
             return;
         }
         Stack<TreeNode> stack = new Stack<>();
-        TreeNode cur = root;
-        while (cur != null || !stack.isEmpty()) {
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.pop();
             while (cur != null) {
                 System.out.println(cur.val);
-                stack.push(cur);
+                // null 也无所谓
+                stack.push(cur.right);
                 cur = cur.left;
             }
-            cur = stack.pop().right;
         }
     }
 
@@ -72,31 +73,7 @@ public class DFS {
         inOrder(root.right);
     }
 
-    //迭代
-    public void inOrder2(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode cur = root;
-        while (cur != null) {
-            stack.push(cur);
-            cur = cur.left;
-        }
-        while (!stack.isEmpty()) {
-            cur = stack.pop();
-            System.out.println(cur.val);
-            if (cur.right != null) {
-                cur = cur.right;
-                while (cur != null) {
-                    stack.push(cur);
-                    cur = cur.left;
-                }
-            }
-        }
-    }
 
-    //简化一下上面的代码，因为有重复代码
     public void inOrder3(TreeNode root) {
         if (root == null) {
             return;
@@ -129,34 +106,6 @@ public class DFS {
         System.out.println(root.val);
     }
 
-    //迭代
-    public void postOrder2(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        Stack<NodeWithState> stack = new Stack<>();
-        TreeNode cur = root;
-        while (cur != null) {
-            stack.push(new NodeWithState(cur, false));
-            cur = cur.left;
-        }
-        while (!stack.isEmpty()) {
-            NodeWithState tmp = stack.pop();
-            if (tmp.done) {
-                System.out.println(tmp.node.val);
-            } else {
-                tmp.done = true;
-                stack.push(tmp);
-                cur = tmp.node.right;
-                while (cur != null) {
-                    stack.push(new NodeWithState(cur, false));
-                    cur = cur.left;
-                }
-            }
-        }
-    }
-
-    //简化下上面的代码
     public void postOrder3(TreeNode root) {
         if (root == null) {
             return;
