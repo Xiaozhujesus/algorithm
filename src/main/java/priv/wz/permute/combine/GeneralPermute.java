@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class GeneralPermute {
     private List<List<Integer>> permutes = new ArrayList<>();
     // 每个元素是什么
-    private int[] nums;
+    private int[] item;
     // 记录每个元素剩余多少
     private int[] status;
     // 记录当前每个元素被选择了多少
@@ -21,12 +21,12 @@ public class GeneralPermute {
         for (int i : num) {
             statistic.put(i, statistic.getOrDefault(i, 0) + 1);
         }
-        nums = new int[statistic.size()];
+        item = new int[statistic.size()];
         status = new int[statistic.size()];
         cur = new int[m];
         int index = 0;
         for (Map.Entry<Integer, Integer> entry : statistic.entrySet()) {
-            nums[index] = entry.getKey();
+            item[index] = entry.getKey();
             status[index] = entry.getValue();
             index++;
         }
@@ -45,10 +45,10 @@ public class GeneralPermute {
             return;
         }
         // 由于是排列，因此当前 index 位置只要是不同元素，结果一定不同，循环可用元素将其放置在cur[index]
-        for (int i = 0; i < status.length; i++) {
+        for (int i = 0; i < item.length; i++) {
             if (status[i] > 0) {
                 status[i]--;
-                cur[index] = nums[i];
+                cur[index] = item[i];
                 search(index + 1);
                 // 恢复状态
                 status[i]++;

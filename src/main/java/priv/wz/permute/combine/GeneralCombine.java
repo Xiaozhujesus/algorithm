@@ -40,7 +40,7 @@ public class GeneralCombine {
      */
 
     // 每个元素是什么
-    private int[] nums;
+    private int[] item;
     // 记录每个元素剩余多少
     private int[] status;
     // 记录当前每个元素被选择了多少
@@ -54,13 +54,13 @@ public class GeneralCombine {
         for (int i : num) {
             statistic.put(i, statistic.getOrDefault(i, 0) + 1);
         }
-        nums = new int[statistic.size()];
+        item = new int[statistic.size()];
         status = new int[statistic.size()];
         cur = new int[statistic.size()];
         this.m = m;
         int i = 0;
         for (Map.Entry<Integer, Integer> entry : statistic.entrySet()) {
-            nums[i] = entry.getKey();
+            item[i] = entry.getKey();
             status[i] = entry.getValue();
             i++;
         }
@@ -69,8 +69,9 @@ public class GeneralCombine {
     }
 
     /**
-     * 搜索成功，添加结果，当 statusIndex 为 status.length 时只添加 cur，否则
-     * 分为两部分添加：cur[0 - statusIndex) 和 status[statusIndex - status.length)
+     * 搜索成功，添加结果，形式为所有元素组成的数组
+     * 当 statusIndex 为 status.length 时只添加 cur，否则分为两部分添加：
+     * cur[0 - statusIndex) 和 status[statusIndex - status.length)
      *
      * @param statusIndex
      */
@@ -79,14 +80,14 @@ public class GeneralCombine {
         for (int i = 0; i < statusIndex; i++) {
             int c = cur[i];
             while (c > 0) {
-                ans.add(nums[i]);
+                ans.add(item[i]);
                 c--;
             }
         }
         for (int i = statusIndex; i < status.length; i++) {
             int c = status[i];
             while (c > 0) {
-                ans.add(nums[i]);
+                ans.add(item[i]);
                 c--;
             }
         }
@@ -108,10 +109,10 @@ public class GeneralCombine {
             }
             return;
         }
-        int sum = Arrays.stream(IntStream.range(cur_pos, status.length).map(i -> status[i]).toArray()).sum();
-        if (sum < wanted) {
+        int left = Arrays.stream(IntStream.range(cur_pos, status.length).map(i -> status[i]).toArray()).sum();
+        if (left < wanted) {
             return;
-        } else if (sum == wanted) {
+        } else if (left == wanted) {
             addResult(cur_pos);
             return;
         }
@@ -126,7 +127,8 @@ public class GeneralCombine {
         while (choose >= 0) {
             cur[cur_pos] = choose;
             status[cur_pos] -= choose;
-            // 有重复，可以 DP
+            // 这里有重复子问题（搜索时候子路径相同），因此可以 DP，因为答案需要完整路径，而路径前半部分不同
+            // 我们需要记录子路径的解，然后使用子问题的解生成更大问题的解
             search(cur_pos + 1, wanted - choose);
             status[cur_pos] += choose;
             // 由于 choose 最终为 0，因此 cur[cur_pos] 会被恢复为 0，不需要像 status[cur_pos] 被显示恢复
