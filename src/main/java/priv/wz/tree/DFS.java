@@ -41,29 +41,6 @@ public class DFS {
         }
     }
 
-    //迭代
-    public void preOrder3(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        //stack里都是右子树没处理的
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode cur = root;
-        while (cur != null) {
-            System.out.println(cur.val);
-            stack.push(cur);
-            cur = cur.left;
-        }
-        while (!stack.isEmpty()) {
-            cur = stack.pop().right;
-            while (cur != null) {
-                System.out.println(cur.val);
-                stack.push(cur);
-                cur = cur.left;
-            }
-        }
-    }
-    //简化一下上面的代码，有重复代码
     public void preOrder4(TreeNode root) {
         if (root == null) {
             return;

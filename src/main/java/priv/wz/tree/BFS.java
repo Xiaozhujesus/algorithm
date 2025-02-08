@@ -8,9 +8,7 @@ import java.util.Queue;
  */
 public class BFS {
     public void bfs(TreeNode root) {
-        if (root == null) {
-            return;
-        } else {
+        if (root != null) {
             Queue<TreeNode> q = new LinkedList<>();
             q.offer(root);
             int level = 0;
