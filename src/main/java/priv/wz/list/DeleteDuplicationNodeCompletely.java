@@ -1,5 +1,7 @@
 package priv.wz.list;
 
+import java.util.List;
+
 /**
  * 给出一个升序排序的链表，删除链表中的所有重复出现的元素，只保留原链表中只出现一次的元素。
  * 例如：
@@ -43,33 +45,30 @@ public class DeleteDuplicationNodeCompletely {
         return head;
     }
 
-    // 循环
-    public ListNode deleteDuplicates(ListNode head) {
+    public ListNode del(ListNode head) {
         if (head == null) {
             return head;
         }
         ListNode dummy = new ListNode(head);
-        ListNode preTail = dummy;
-        ListNode curHead = head;
-        ListNode cur = head.next;
+        ListNode tail = dummy, curHead = head, cur = curHead.next;
         while (cur != null) {
             if (cur.val == curHead.val) {
                 cur = cur.next;
             } else {
                 // 相邻不等
                 if (curHead.next == cur) {
-                    preTail = curHead;
-
+                    tail = curHead;
                 } else {
-                    preTail.next = cur;
+                    // 跳过重复的一段
+                    tail.next = cur;
                 }
                 curHead = cur;
                 cur = cur.next;
             }
         }
-        // 最后一个连续
+        // 最后一段如果相等需要跳过
         if (curHead.next != null) {
-            preTail.next = null;
+            tail.next = null;
         }
         return dummy.next;
     }

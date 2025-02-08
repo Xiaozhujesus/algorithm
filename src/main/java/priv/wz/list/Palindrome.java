@@ -1,6 +1,7 @@
 package priv.wz.list;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * 请判断一个链表是否为回文链表。
@@ -13,6 +14,31 @@ import java.util.ArrayList;
  * 用O(n)时间复杂度,O(1)空间复杂度
  */
 public class Palindrome {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null) {
+            return true;
+        }
+        Stack<ListNode> stack = new Stack<>();
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next;
+            fast = fast.next;
+        }
+        while (slow != null) {
+            stack.push(slow);
+            slow = slow.next;
+        }
+        slow = head;
+        while (!stack.isEmpty()) {
+            if (slow.val != stack.pop().val) {
+                return false;
+            }
+            slow = slow.next;
+        }
+        return true;
+    }
+
     public boolean palindrome(ListNode head) {
         if (head == null || head.next == null) {
             return true;

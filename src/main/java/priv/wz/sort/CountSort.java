@@ -1,5 +1,7 @@
 package priv.wz.sort;
 
+import java.util.Arrays;
+
 /**
  * For simplicity, consider the data in the range 0 to 9.
  * Input data: 1, 4, 1, 2, 7, 5, 2
@@ -15,7 +17,6 @@ package priv.wz.sort;
 public class CountSort {
 
     void sort(char arr[]) {
-        char output[] = new char[arr.length];
         int count[] = new int[256];
         for (int i = 0; i < arr.length; ++i)
             ++count[arr[i]];
@@ -48,11 +49,10 @@ public class CountSort {
     }
 
     public static void main(String[] args) {
-        CountSort ob = new CountSort();
+
         char[] arr = {'g', 'e', 'e', 'k', 's', 'f', 'o', 'r', 'g', 'e', 'e', 'k', 's'};
-        ob.sort(arr);
-        System.out.print("Sorted character array is ");
-        for (int i = 0; i < arr.length; ++i)
-            System.out.print(arr[i]);
+        new CountSort().sort(arr);
+        System.out.print("Sorted character array is " + Arrays.toString(arr));
+
     }
 }

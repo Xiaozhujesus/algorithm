@@ -1,5 +1,8 @@
 package priv.wz.list;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 给你一个长度为 n 的链表，每个节点包含一个额外增加的随机指针 random ，该指针可以指向链表中的任何节点或空节点。
  *
@@ -14,23 +17,23 @@ public class ListDeepCopy {
         if (head == null) {
             return null;
         }
-        Node ret = new Node(head.val);
+        Node ans = new Node(head.val);
         Node srcCur = head;
-        Node desCur = ret;
+        Node desCur = ans;
         while (srcCur.next != null) {
             desCur.next = new Node(srcCur.next.val);
             srcCur = srcCur.next;
             desCur = desCur.next;
         }
         srcCur = head;
-        desCur = ret;
+        desCur = ans;
         Node p1, p2;
         while (srcCur != null) {
             if (srcCur.random == null) {
                 desCur.random = null;
             } else {
                 p1 = head;
-                p2 = ret;
+                p2 = ans;
                 while (p1 != srcCur.random) {
                     p1 = p1.next;
                     p2 = p2.next;
@@ -40,7 +43,36 @@ public class ListDeepCopy {
             srcCur = srcCur.next;
             desCur = desCur.next;
         }
-        return ret;
+        return ans;
+    }
+
+    public Node deepCopy2(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Map<Node, Node> map = new HashMap<>();
+        Node ans = new Node(head.val);
+        Node srcCur = head;
+        Node desCur = ans;
+        map.put(head, ans);
+        while (srcCur.next != null) {
+            desCur.next = new Node(srcCur.next.val);
+            srcCur = srcCur.next;
+            desCur = desCur.next;
+            map.put(srcCur, desCur);
+        }
+        srcCur = head;
+        desCur = ans;
+        while (srcCur != null) {
+            if (srcCur.random == null) {
+                desCur.random = null;
+            } else {
+                desCur.random = map.get(srcCur.random);
+            }
+            srcCur = srcCur.next;
+            desCur = desCur.next;
+        }
+        return ans;
     }
 
     class Node {

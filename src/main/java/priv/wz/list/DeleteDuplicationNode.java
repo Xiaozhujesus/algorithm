@@ -19,18 +19,14 @@ public class DeleteDuplicationNode {
 
     // 循环
     public ListNode deleteDuplication2(ListNode head) {
-        util(head);
-        return head;
-    }
-
-    private void util(ListNode head) {
-        ListNode cur = head;
-        while (head != null) {
-            while (cur != null && cur.val == head.val) {
+        ListNode subHead = head, cur = head;
+        while (subHead != null) {
+            while (cur != null && cur.val == subHead.val) {
                 cur = cur.next;
             }
-            head.next = cur;
-            head = cur;
+            subHead.next = cur;
+            subHead = cur;
         }
+        return head;
     }
 }

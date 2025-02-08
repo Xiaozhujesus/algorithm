@@ -19,9 +19,9 @@ public class DeleteListNode {
                 cur = cur.next;
             }
             if (pre == null) {
-                head = null;
+                head = head.next;
             } else {
-                pre.next = null;
+                pre.next = cur.next;
             }
         }
     }

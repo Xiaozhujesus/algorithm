@@ -8,6 +8,78 @@ import java.util.Stack;
  * 例如：链表 1 为 9->3->7，链表 2 为 6->3，最后生成新的结果链表为 1->0->0->0。
  */
 public class AddList {
+    public ListNode add(ListNode a, ListNode b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        int len = 0, max = 0, min = 0;
+        ListNode cur = a;
+        while (cur != null) {
+            len++;
+            cur = cur.next;
+        }
+        cur = b;
+        max = len;
+        len = 0;
+        while (cur != null) {
+            len++;
+            cur = cur.next;
+        }
+        if (max > len) {
+            cur = a;
+            min = len;
+        } else {
+            cur = b;
+            min = max;
+            max = len;
+        }
+        int[] ans = new int[max + 1];
+        ans[0] = -1;
+        // 处理长的
+        for (int i = 1; i < ans.length; i++) {
+            ans[i] = cur.val;
+            cur = cur.next;
+        }
+        // 处理短的
+        if (cur == a) {
+            cur = b;
+        }
+        int curIndex = max - min + 1;
+        while (curIndex < ans.length) {
+            int sum = cur.val + ans[curIndex];
+            if (sum > 9) {
+                ans[curIndex] = sum % 10;
+                int index = curIndex;
+                while (ans[index] > 9) {
+                    ans[index] = ans[index] - 10;
+                    index--;
+                    ans[index] += 1;
+                }
+            }
+            cur = cur.next;
+            curIndex++;
+        }
+        ListNode head;
+        int index;
+        if (ans[0] != -1) {
+            head = new ListNode(ans[0]);
+            index = 1;
+        } else {
+            head = new ListNode(ans[1]);
+            index = 2;
+        }
+        ListNode before = head;
+        while (index < ans.length) {
+            before.next = new ListNode(ans[index]);
+            before = before.next;
+            index++;
+        }
+        return head;
+    }
+
     public ListNode f(ListNode a, ListNode b) {
         if (a == null) {
             return b;

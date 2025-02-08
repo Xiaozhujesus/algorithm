@@ -48,8 +48,11 @@ public class QuickSort {
      * 左闭右开，用户保证 l < r，否则结果未定义
      */
     public int partition2(int[] arr, int l, int r) {
-        int key = arr[l];
         r--;
+        l--;
+        int key = arr[r];
+        int keyIndex = r;
+        // 循环不变式，arr[l] < key，arr[r] >= key
         while (l < r) {
             while (l < r && arr[r] >= key) {
                 r--;
@@ -57,12 +60,14 @@ public class QuickSort {
             while (l < r && arr[l] < key) {
                 l++;
             }
-            /**
-             * 下次循环开始时，l 和 r 位置的值满足循环不变式，因此如果 l == r
-             * 直接退出循环即可，不需要 partition() 函数中最后一次的交换
-             */
-            swapEqual(arr, l, r);
+            // 所有元素都大于等于最后一个元素时，l == r 且在数组范围外
+            if (l != r) {
+                swapEqual(arr, l, r);
+            }
         }
+        // 此时 arr[l] 一定小于 key
+        l++;
+        swapEqual(arr, l, keyIndex);
         return l;
     }
 

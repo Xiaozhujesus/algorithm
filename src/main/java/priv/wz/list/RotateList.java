@@ -22,12 +22,14 @@ public class RotateList {
             first = first.next;
         }
 
+        // 移动的距离比链表长
         if (internal != 0) {
             int listLength = k - internal + 1;
             int p = k % listLength;
             if (p == 0) {
                 return head;
             }
+            // 再次执行第一个指针先移动 k 的逻辑，这次一定不会超出链表长度
             first = head;
             while (p != 0) {
                 first = first.next;
@@ -35,13 +37,14 @@ public class RotateList {
             }
         }
 
+        // 找到断链位置 second
         while (first.next != null) {
             first = first.next;
             second = second.next;
         }
-        ListNode ret = second.next;
+        ListNode ans = second.next;
         second.next = null;
         first.next = head;
-        return ret;
+        return ans;
     }
 }
