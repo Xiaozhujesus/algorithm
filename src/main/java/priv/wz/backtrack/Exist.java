@@ -15,6 +15,7 @@ public class Exist {
             return false;
         }
         this.board = board;
+        this.word = word;
         int row = board.length;
         int column = board[0].length;
         this.visit = new boolean[row][column];

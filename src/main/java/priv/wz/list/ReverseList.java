@@ -6,17 +6,14 @@ package priv.wz.list;
 public class ReverseList {
     //迭代
     public ListNode reverse(ListNode head) {
-        ListNode pre = null;
-        ListNode cur = head;
-        ListNode next = head.next;
-        while (next != null) {
+        ListNode pre = null, cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
             cur.next = pre;
             pre = cur;
             cur = next;
-            next = next.next;
         }
-        cur.next = pre;
-        return cur;
+        return pre;
     }
 
     //递归

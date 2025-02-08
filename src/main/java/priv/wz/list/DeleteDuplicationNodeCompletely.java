@@ -1,7 +1,5 @@
 package priv.wz.list;
 
-import java.util.List;
-
 /**
  * 给出一个升序排序的链表，删除链表中的所有重复出现的元素，只保留原链表中只出现一次的元素。
  * 例如：
@@ -27,48 +25,31 @@ public class DeleteDuplicationNodeCompletely {
         return delete(cur);
     }
 
-    // 重复节点只保留一个
-    public ListNode delete2(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        ListNode pre = head, cur = head.next;
-        while (cur != null) {
-            while (cur.val == pre.val) {
-                cur = cur.next;
-            }
-            pre.next = cur;
-            pre = cur;
-            cur = cur.next;
-        }
-        pre.next = cur;
-        return head;
-    }
-
     public ListNode del(ListNode head) {
         if (head == null) {
             return head;
         }
-        ListNode dummy = new ListNode(head);
-        ListNode tail = dummy, curHead = head, cur = curHead.next;
+        ListNode dummy = new ListNode(1);
+        dummy.next = head;
+        ListNode pre = dummy, cur = head.next;
         while (cur != null) {
-            if (cur.val == curHead.val) {
+            if (cur.val == head.val) {
                 cur = cur.next;
             } else {
                 // 相邻不等
-                if (curHead.next == cur) {
-                    tail = curHead;
+                if (head.next == cur) {
+                    pre = head;
                 } else {
                     // 跳过重复的一段
-                    tail.next = cur;
+                    pre.next = cur;
                 }
-                curHead = cur;
+                head = cur;
                 cur = cur.next;
             }
         }
         // 最后一段如果相等需要跳过
-        if (curHead.next != null) {
-            tail.next = null;
+        if (head.next != null) {
+            pre.next = null;
         }
         return dummy.next;
     }

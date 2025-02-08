@@ -258,5 +258,66 @@ public class AddList {
             }
         }
     }
+
+    /**
+     * 链表代表的数字已经逆序存储，比如 1->2->3，代表数字123
+     * [2,4,3]+
+     * [5,6,4]=
+     * [7,0,8]
+     */
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int full = 0;
+        ListNode dummy = new ListNode(l1);
+        ListNode pre = dummy;
+        while (l1 != null && l2 != null) {
+            int sum = l1.val + l2.val + full;
+            l1.val = sum % 10;
+            full = sum > 9 ? 1 : 0;
+            pre = l1;
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        // 获取 l1 l2 不为 null 的节点继续处理
+        if (l2 == null && l1 != null) {
+            l2 = l1;
+        }
+        if (l2 != null) {
+            // 先连上
+            pre.next = l2;
+            while (l2 != null) {
+                int sum = l2.val + full;
+                l2.val = sum % 10;
+                full = sum > 9 ? 1 : 0;
+                pre = l2;
+                l2 = l2.next;
+            }
+        }
+        if (full == 1) {
+            pre.next = new ListNode(1);
+        }
+        return dummy.next;
+    }
+
+
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(1);
+        dummy.next = head;
+        ListNode pre = dummy, cur = head, tail = head;
+        while (n > 1 && tail != null) {
+            tail = tail.next;
+            n--;
+        }
+        if (tail == null) {
+            return head;
+        }
+        while (tail.next != null) {
+            pre = cur;
+            cur = cur.next;
+            tail = tail.next;
+        }
+        pre.next = cur.next;
+        return dummy.next;
+    }
 }
 

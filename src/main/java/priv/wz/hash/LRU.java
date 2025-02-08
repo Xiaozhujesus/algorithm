@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class LRU {
     private class Node {
-        String key;
+        int key;
         int val;
         Node pre;
         Node next;
@@ -13,27 +13,27 @@ public class LRU {
         Node() {
         }
 
-        Node(String key, int val) {
+        Node(int key, int val) {
             this.key = key;
             this.val = val;
         }
     }
 
-    private Node head;
-    private Node tail;
+    private Node dummyHead;
+    private Node dummyTail;
     private int capacity;
-    private Map<String, Node> cache;
+    private Map<Integer, Node> cache;
 
     public LRU(int capacity) {
-        head = new Node();
-        tail = new Node();
-        head.next = tail;
-        tail.pre = head;
+        dummyHead = new Node();
+        dummyTail = new Node();
+        dummyHead.next = dummyTail;
+        dummyTail.pre = dummyHead;
         this.capacity = capacity;
         cache = new HashMap<>(capacity);
     }
 
-    public int get(String key) {
+    public int get(int key) {
         Node cur = cache.get(key);
         if (cur == null) {
             return -1;
@@ -43,7 +43,7 @@ public class LRU {
         }
     }
 
-    public void put(String key, int val) {
+    public void put(int key, int val) {
         Node cur = cache.get(key);
         if (cur == null) {
             if (cache.size() == capacity) {
@@ -62,24 +62,22 @@ public class LRU {
     }
 
     private void remove(Node node) {
-        Node pre = node.pre;
-        Node next = node.next;
-        pre.next = next;
-        next.pre = pre;
+        node.pre.next = node.next;
+        node.next.pre = node.pre;
         node.pre = null;
         node.next = null;
         cache.remove(node.key);
     }
 
     private void removeTail() {
-        remove(tail.pre);
+        remove(dummyTail.pre);
     }
 
     private void addToHead(Node node) {
-        node.pre = head;
-        node.next = head.next;
-        head.next.pre = node;
-        head.next = node;
+        node.pre = dummyHead;
+        node.next = dummyHead.next;
+        dummyHead.next.pre = node;
+        dummyHead.next = node;
         cache.put(node.key, node);
     }
 }

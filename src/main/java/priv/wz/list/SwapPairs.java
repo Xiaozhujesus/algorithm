@@ -9,15 +9,15 @@ public class SwapPairs {
             return head;
         }
         ListNode dummy = new ListNode(head);
-        ListNode preTail = dummy, a = head, b = a.next, nextHead = b.next;
-        while (a != null && b != null) {
+        ListNode preTail = dummy, a = head;
+        while (a != null && a.next != null) {
+            ListNode b = a.next;
+            ListNode nextHead = b.next;
             preTail.next = b;
             b.next = a;
             a.next = nextHead;
             preTail = a;
             a = nextHead;
-            b = a != null ? a.next : null;
-            nextHead = b != null ? b.next : null;
         }
         return dummy.next;
     }

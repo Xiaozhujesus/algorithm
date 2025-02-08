@@ -7,6 +7,29 @@ package priv.wz.search;
  * 每列的元素从上到下升序排列。
  */
 public class SearchMatrix {
+
+    /**
+     * 某个点的左上是小于该点的，右下是大于该点的，剩余区域与该点无法比较大小
+     * 搜索结束时一定要所有点都搜完排除掉，因此我们要避免右上左下的区域，从右上或左下角开始搜即可
+     */
+    public boolean f(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+        int row = 0, column = matrix[0].length - 1;
+        while (row < matrix.length && column >=0) {
+            if (matrix[row][column] == target) {
+                return true;
+            } else if (matrix[row][column] < target) {
+                row++;
+            } else {
+                column--;
+            }
+        }
+        return false;
+    }
+
+
     public boolean search(int[][] matrix, int target) {
         boolean horizon = true;
         int row = 0, column = matrix[0].length - 1;

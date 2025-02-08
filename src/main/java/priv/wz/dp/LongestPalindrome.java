@@ -4,7 +4,7 @@ package priv.wz.dp;
  * 最长回文串，ababd，最长回文串为aba或bab
  */
 public class LongestPalindrome {
-    public String solution(String s) {
+    public String longestPalindrome(String s) {
         if ((s == null) || s.equals("")) {
             return "";
         }

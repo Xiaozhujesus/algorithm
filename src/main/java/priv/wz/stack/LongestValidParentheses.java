@@ -1,6 +1,8 @@
 package priv.wz.stack;
 
 import java.util.Stack;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 给你一个只包含 ‘(’ 和 ‘)’ 的字符串，找出最长有效（格式正确且连续）括号子串的长度。
@@ -20,10 +22,8 @@ import java.util.Stack;
  * Output: 0
  */
 public class LongestValidParentheses {
+
     public int longestValidParentheses(String s) {
-        if (s == null) {
-            return 0;
-        }
         int ans = 0;
         Stack<Integer> stack = new Stack<>();
         stack.push(-1);
@@ -32,76 +32,16 @@ public class LongestValidParentheses {
                 stack.push(i);
             } else {
                 stack.pop();
-                if (stack.size() == 0) {
+                if (stack.isEmpty()) {
                     stack.push(i);
                 } else {
-                    Integer peek = stack.peek();
-                    if (i - peek > ans) {
-                        ans = i - peek;
-                    }
+                    ans = Math.max(ans, i - stack.peek());
                 }
             }
         }
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
         return ans;
     }
 
-    // 上面的优化
-    public int longestValidParentheses2(String s) {
-        if (s == null) {
-            return 0;
-        }
-        int left = 0, right = 0, ans = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                left++;
-            } else {
-                right++;
-                if (right == left) {
-                    if (left * 2 > ans) {
-                        ans = left * 2;
-                    }
-                } else if (right > left) {
-                    left = right = 0;
-                }
-            }
-        }
-
-        // 反过来处理一下，用于处理 (()这种情况
-        left = right = 0;
-        for (int i = s.length() - 1; i >= 0; i--) {
-            if (s.charAt(i) == ')') {
-                right++;
-            } else {
-                left++;
-                if (left == right) {
-                    if (left * 2 > ans) {
-                        ans = left * 2;
-                    }
-                } else if (left > right) {
-                    left = right = 0;
-                }
-            }
-        }
-        return ans;
-    }
-
-    public int longestValidParentheses3(String s) {
-        int ans = 0;
-        int n = 0, left = 0;
-        for (int i = 0, end = s.length(); i < end; i++) {
-            if (s.charAt(i) == '(') {
-                left++;
-            } else {
-                if (left == 0) {
-                    n = 0;
-                } else {
-                    left--;
-                    if (++n > ans) {
-                        ans = n;
-                    }
-                }
-            }
-        }
-        return ans * 2;
-    }
+    // 类似最长回文子串的方法，遍历每个字符，从中间往两边扩散，效率没上面的高
 }

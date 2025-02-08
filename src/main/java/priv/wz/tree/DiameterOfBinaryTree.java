@@ -20,10 +20,7 @@ public class DiameterOfBinaryTree {
         }
         int l = height(root.left);
         int r = height(root.right);
-        int tmp = l + r;
-        if (tmp > ans) {
-            ans = tmp;
-        }
+        ans = Math.max(ans, l + r);
         return Math.max(l, r) + 1;
     }
 }

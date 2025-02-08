@@ -20,9 +20,7 @@ public class MaxSubArraySum {
              */
             current = preSubArraySum + arr[i];
             preSubArraySum = Math.max(current, arr[i]);
-            if (preSubArraySum > max) {
-                max = preSubArraySum;
-            }
+            max = Math.max(max, preSubArraySum);
         }
         return max;
     }

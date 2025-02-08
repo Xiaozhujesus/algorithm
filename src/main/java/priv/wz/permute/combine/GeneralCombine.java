@@ -46,9 +46,9 @@ public class GeneralCombine {
     // 记录当前每个元素被选择了多少
     private int[] cur;
     private int m;
-    private List<List<Integer>> combines = new ArrayList<>();
+    private List<int[]> combines = new ArrayList<>();
 
-    public List<List<Integer>> combine(int[] num, int m) {
+    public List<int[]> combine(int[] num, int m) {
         // 输入预处理
         Map<Integer, Integer> statistic = new HashMap<>();
         for (int i : num) {
@@ -75,27 +75,30 @@ public class GeneralCombine {
      *
      * @param statusIndex
      */
-    private void addResult(int statusIndex) {
-        List<Integer> ans = new ArrayList<>(m);
+    private void addResult(int statusIndex, boolean all) {
+        int[] ans = new int[m];
+        int j = 0;
         for (int i = 0; i < statusIndex; i++) {
             int c = cur[i];
             while (c > 0) {
-                ans.add(item[i]);
+                ans[j++] = item[i];
                 c--;
             }
         }
-        for (int i = statusIndex; i < status.length; i++) {
-            int c = status[i];
-            while (c > 0) {
-                ans.add(item[i]);
-                c--;
+        if (all) {
+            for (int i = statusIndex; i < status.length; i++) {
+                int c = status[i];
+                while (c > 0) {
+                    ans[j++] = item[i];
+                    c--;
+                }
             }
         }
         combines.add(ans);
     }
 
     /**
-     * 回溯法搜索
+     * 回溯法搜索，搜索的关键在于对某个元素的数量做改变，使得结果不重复
      *
      * @param cur_pos
      * @param wanted
@@ -103,21 +106,18 @@ public class GeneralCombine {
      */
     private void search(int cur_pos, int wanted) {
         // 回溯结束条件
+        if (wanted == 0) {
+            addResult(cur_pos, false);
+            return;
+        }
         if (cur_pos == status.length) {
-            if (wanted == 0) {
-                addResult(status.length);
-            }
             return;
         }
         int left = Arrays.stream(IntStream.range(cur_pos, status.length).map(i -> status[i]).toArray()).sum();
         if (left < wanted) {
             return;
         } else if (left == wanted) {
-            addResult(cur_pos);
-            return;
-        }
-        if (wanted == 0) {
-            addResult(status.length);
+            addResult(cur_pos, true);
             return;
         }
         int choose = Math.min(status[cur_pos], wanted);

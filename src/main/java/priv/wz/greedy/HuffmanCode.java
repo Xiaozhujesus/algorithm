@@ -17,6 +17,7 @@ public class HuffmanCode {
         for (int i = 0; i < c.length; i++) {
             pq.add(new HuffmanNode(c[i], freq[i]));
         }
+        // 构建哈夫曼树
         while (pq.size() > 1) {
             HuffmanNode x = pq.poll();
             HuffmanNode y = pq.poll();

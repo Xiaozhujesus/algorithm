@@ -7,7 +7,7 @@ import java.util.Set;
  * 给定一个字符串，求它的无重复字符的最长子串，子串是连续的，而子序列可以不连续
  */
 public class LongestNonRepeatSubStr {
-    public String f(String s) {
+    public String lengthOfLongestSubstring(String s) {
         if (s == null || s.length() == 0) {
             return "";
         }

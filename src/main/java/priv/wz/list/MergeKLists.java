@@ -1,6 +1,5 @@
 package priv.wz.list;
 
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -13,20 +12,13 @@ public class MergeKLists {
         if (lists == null || lists.length == 0) {
             return null;
         }
-        PriorityQueue<ListNode> q = new PriorityQueue<>(new Comparator<ListNode>() {
-            @Override
-            public int compare(ListNode a, ListNode b) {
-                return a.val - b.val;
-            }
-        });
+        PriorityQueue<ListNode> q = new PriorityQueue<>((a,b) -> a.val - b.val);
         for (ListNode i : lists) {
-            q.offer(i);
+            if (i != null) {
+                q.offer(i);
+            }
         }
-        ListNode head = q.poll();
-        ListNode tail = head;
-        if (head.next != null) {
-            q.offer(head.next);
-        }
+        ListNode dummy = new ListNode(), tail = dummy;
         while (!q.isEmpty()) {
             ListNode cur = q.poll();
             if (cur.next != null) {
@@ -35,6 +27,24 @@ public class MergeKLists {
             tail.next = cur;
             tail = cur;
         }
-        return head;
+        return dummy.next;
+    }
+
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(1);
+        ListNode pre = dummy;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                pre.next = list1;
+                pre = list1;
+                list1 = list1.next;
+            } else {
+                pre.next = list2;
+                pre = list2;
+                list2 = list2.next;
+            }
+        }
+        pre.next = list1 == null ? list2 : list1;
+        return dummy.next;
     }
 }

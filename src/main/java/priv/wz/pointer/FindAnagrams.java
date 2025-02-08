@@ -11,55 +11,59 @@ import java.util.List;
 public class FindAnagrams {
     public List<Integer> findAnagrams(String s, String p) {
         List<Integer> ans = new ArrayList<>();
-        if (s.length() == 0 || p.length() == 0 || s.length() < p.length()) {
+        if (s == null || p == null || s.length() < p.length()) {
             return ans;
         }
+        // 滑动窗口
         int[] bound = new int[26];
         for (char c : p.toCharArray()) {
             bound[c - 'a']++;
         }
-        int[] count = new int[26];
+        for (int i = 0; i < 26; i++) {
+            if (bound[i] == 0) {
+                bound[i] = -1;
+            }
+        }
         int l = 0, r = 0, len = 0;
         while (r != s.length()) {
             int rc = s.charAt(r) - 'a';
             // 不存在的直接跳过
-            if (bound[rc] == 0) {
+            if (bound[rc] == -1) {
+                while (l != r) {
+                    bound[s.charAt(l) - 'a']++;
+                    l++;
+                }
                 l = r = r + 1;
                 len = 0;
-                Arrays.fill(count, 0);
             } else {
-                count[rc]++;
                 len++;
                 // 超过上限
-                if (count[rc] > bound[rc]) {
+                if (bound[rc] == 0) {
                     int lc = s.charAt(l) - 'a';
                     while (lc != rc) {
-                        count[lc]--;
+                        bound[lc]++;
                         l++;
                         len--;
                         lc = s.charAt(l) - 'a';
                     }
-                    count[lc]--;
                     l++;
                     len--;
-                    r++;
-                } else if (len == p.length()) {
-                    // 未超限且长度匹配，就是异位词
-                    ans.add(l);
-                    count[s.charAt(l) - 'a']--;
-                    l++;
-                    r++;
-                    len--;
+                    if (len == p.length()) {
+                        ans.add(l);
+                    }
                 } else {
-                    // 未超限且长度不够，直接下一个
-                    r++;
+                    bound[rc]--;
+                    if (len == p.length()) {
+                        ans.add(l);
+                    }
                 }
+                r++;
             }
         }
         return ans;
     }
 
     public static void main(String[] args) {
-        System.out.println(new FindAnagrams().findAnagrams("abaacbabc","abc"));
+        System.out.println(new FindAnagrams().findAnagrams("abab", "ab"));
     }
 }

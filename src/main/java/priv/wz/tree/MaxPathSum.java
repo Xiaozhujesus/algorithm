@@ -43,9 +43,7 @@ public class MaxPathSum {
         if (right > 0) {
             curMax += right;
         }
-        if (curMax > max) {
-            max = curMax;
-        }
+        max = Math.max(curMax, max);
         if (left >= right && left > 0) {
             return left + root.val;
         } else if (right >= left && right > 0) {

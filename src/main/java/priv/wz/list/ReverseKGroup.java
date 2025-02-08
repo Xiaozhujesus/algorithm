@@ -11,61 +11,40 @@ package priv.wz.list;
  * 对于 k = 3, 你应该返回 3→2→1→4→5
  */
 public class ReverseKGroup {
-    public ListNode reverseKGroup(ListNode head, int k) {
+
+    public ListNode reverseKGroup1(ListNode head, int k) {
         if (head == null || k == 1) {
             return head;
         }
         ListNode dummy = new ListNode(head);
-        ListNode preTail = dummy;
-        ListNode start = head;
-        while (start != null) {
-            Pair reverse = reverse(start, k);
-            preTail.next = reverse.head;
-            preTail = reverse.tail;
-            start = preTail.next;
+        ListNode preTail = dummy, subHead = head, subTail;
+        while ((subTail = getTail(subHead, k)) != null) {
+            ListNode nextHead = subTail.next;
+            reverse(subHead, subTail);
+            preTail.next = subTail;
+            subHead.next = nextHead;
+            preTail = subHead;
+            subHead = nextHead;
         }
         return dummy.next;
     }
 
-    /**
-     * 将 head 链表前 k 个元素翻转，返回翻转后这 k 个的 head 和 tail
-     * 若链表长度比 k 大，后面的不动
-     */
-    private Pair reverse(ListNode head, int k) {
-        Pair pair = new Pair();
-        // 检测剩余节点数够不够 k
+    ListNode getTail(ListNode head, int k) {
+        while (head != null && k > 1) {
+            head = head.next;
+            k--;
+        }
+        return head;
+    }
+
+    private void reverse(ListNode head, ListNode tail) {
         ListNode pre = null, cur = head;
-        int count = k;
-        while (cur != null && count != 0) {
-            count--;
-            pre = cur;
-            cur = cur.next;
-        }
-        // 不够 k
-        if (count != 0) {
-            pair.head = head;
-            pair.tail = pre;
-            return pair;
-        }
-        // 够 k
-        pre = null;
-        cur = head;
-        ListNode next = cur.next;
-        while (--k != 0) {
+        while (cur != tail) {
+            ListNode next = cur.next;
             cur.next = pre;
             pre = cur;
             cur = next;
-            next = next.next;
         }
         cur.next = pre;
-        pair.tail = head;
-        pair.head = cur;
-        pair.tail.next = next;
-        return pair;
-    }
-
-    class Pair {
-        ListNode head;
-        ListNode tail;
     }
 }

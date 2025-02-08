@@ -31,6 +31,31 @@ public class LongestIncrementSubSeq {
         return max;
     }
 
+    // 上面可以优化一下
+    public int liss(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+        int max = 1;
+        // dp[i] 代表所有长度为i的递增序列中末尾的元素最小是多少，根据该定义，反证法很容易证明 dp 一定递增
+        // 与 greedy 算法中的 IncreasingTriplet 问题一样
+        int[] dp = new int[arr.length];
+        dp[0] = arr[0];
+        int lastPos = 0;
+        for (int i = 1; i < arr.length; i++) {
+            for (int j = 0; j <= lastPos; j++) {
+                if (dp[j] >= arr[i]) {
+                    dp[j] = arr[i];
+                    break;
+                }
+            }
+            if (dp[lastPos] < arr[i]) {
+                dp[++lastPos] = arr[i];
+            }
+        }
+        return lastPos + 1;
+    }
+
     //贪心加二分O(NlogN)
     public int[] solution2(int[] arr) {
         if (arr == null || arr.length == 0) {
@@ -72,9 +97,6 @@ public class LongestIncrementSubSeq {
             if (history[i] == j) {
                 res[j--] = arr[i];
             }
-        }
-        for (int i = 0; i < arr.length; i++) {
-
         }
         return res;
     }

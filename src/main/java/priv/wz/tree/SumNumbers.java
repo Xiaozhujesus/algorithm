@@ -9,11 +9,11 @@ public class SumNumbers {
     private int sum = 0;
 
     public int sumNumbers(TreeNode root) {
-        util(0, root);
+        dfs(0, root);
         return sum;
     }
 
-    private void util(int preSum, TreeNode root) {
+    private void dfs(int preSum, TreeNode root) {
         if (root == null) {
             return;
         }
@@ -22,7 +22,7 @@ public class SumNumbers {
             return;
         }
         int curSum = preSum * 10 + root.val;
-        util(curSum, root.left);
-        util(curSum, root.right);
+        dfs(curSum, root.left);
+        dfs(curSum, root.right);
     }
 }

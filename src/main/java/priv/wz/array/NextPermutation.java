@@ -19,18 +19,21 @@ public class NextPermutation {
     /**
      * 从后往前找第一个下降点，比如位置 i，那么从 i+1 ~ last 找
      * 大于 nums[i] 的最小的数，与 i 互换后，将 i+1 ~ last 按升序排列（两头到中间 swap 即可）
+     * 有点贪心的意思
      * 如果有多个比 nums[i] 大，找最右侧的那个，这样直接 swap 后保证剩余元素最小
      */
+
+    public static void main(String[] args) {
+        int[] tmp = {2,3,1};
+        new NextPermutation().nextPermutation(tmp);
+
+    }
     public void nextPermutation(int[] nums) {
         if (nums == null || nums.length == 1) {
             return;
         }
 
         int i = nums.length - 1;
-        if (nums[i - 1] < nums[i]) {
-            swap(nums, i - 1, i);
-            return;
-        }
         while (i > 0 && nums[i - 1] >= nums[i]) {
             i--;
         }
@@ -43,7 +46,7 @@ public class NextPermutation {
                 j--;
             }
         } else {
-            int index = bsearch(nums, i, nums.length - 1, nums[i - 1]);
+            int index = justGreatThan(nums, i, nums[i - 1]);
             swap(nums, i - 1, index);
             int j = nums.length - 1;
             while (i < j) {
@@ -61,22 +64,14 @@ public class NextPermutation {
     }
 
     /**
-     * arr [low, high] 递减，返回 arr 中第一个大于 target 的元素 index
-     * 若有多个相同元素大于 target，返回最大 index
+     * arr 从 begin 开始递减，找到刚好大于 target 的位置
      */
-    private int bsearch(int[] arr, int low, int high, int target) {
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (arr[mid] > target) {
-                if (arr[mid + 1] <= target) {
-                    return mid;
-                }
-                low = mid + 1;
-            } else {
-                high = mid - 1;
+    private int justGreatThan(int[] arr, int begin, int target) {
+        for (int i = begin; i < arr.length; i++) {
+            if (arr[i] <= target) {
+                return i - 1;
             }
         }
-        // 不会到这
-        return -1;
+        return arr.length - 1;
     }
 }

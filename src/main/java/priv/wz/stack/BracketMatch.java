@@ -25,53 +25,12 @@ public class BracketMatch {
                 }
                 if (match(stack.peek(), c)) {
                     stack.pop();
+                } else {
+                    return false;
                 }
             }
         }
         return stack.isEmpty();
-    }
-
-    public boolean g(String str) {
-        if (str == null || str.length() == 0) {
-            return true;
-        }
-        if (str.length() % 2 == 1) {
-            return false;
-        }
-        int a = 0, b = 0, c = 0;
-        boolean over = false;
-        for (int i = 0; i < str.length(); i++) {
-            if (over) {
-                return false;
-            }
-            switch (str.charAt(i)) {
-                case '(':
-                    a++;
-                    break;
-                case '{':
-                    b++;
-                    break;
-                case '[':
-                    c++;
-                    break;
-                case ')':
-                    if (--a < 0) {
-                        over = true;
-                    }
-                    break;
-                case '}':
-                    if (--b < 0) {
-                        over = true;
-                    }
-                    break;
-                case ']':
-                    if (--c < 0) {
-                        over = true;
-                    }
-                    break;
-            }
-        }
-        return true;
     }
 
     private boolean left(char c) {

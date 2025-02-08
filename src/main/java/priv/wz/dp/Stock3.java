@@ -9,39 +9,41 @@ public class Stock3 {
 
     // 利用 Stock1 问题的思路
     public int maxProfit(int[] prices) {
-        int[] preMaxProfit = new int[prices.length];
-        int preMin = prices[0], targetMax = 0;
+        boolean inc = true;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] <= prices[i-1]) {
+                inc = false;
+                break;
+            }
+        }
+        // 递增只买卖一次即可
+        if (inc) {
+            return prices[prices.length-1] - prices[0];
+        }
+        int[] beforeMaxProfit = new int[prices.length];
+        int preMin = prices[0], curMaxProfit = 0;
         for (int i = 1; i < prices.length; i++) {
             if (prices[i] < preMin) {
                 preMin = prices[i];
             } else {
-                int tmp = prices[i] - preMin;
-                if (tmp > targetMax) {
-                    targetMax = tmp;
-                }
+                curMaxProfit = Math.max(curMaxProfit, prices[i] - preMin);
             }
-            preMaxProfit[i] = targetMax;
+            beforeMaxProfit[i] = curMaxProfit;
         }
         int[] afterMaxProfit = new int[prices.length];
         int afterMax = prices[prices.length - 1];
-        targetMax = 0;
+        curMaxProfit = 0;
         for (int i = prices.length - 2; i >= 0; i--) {
             if (prices[i] > afterMax) {
                 afterMax = prices[i];
             } else {
-                int tmp = afterMax - prices[i];
-                if (tmp > targetMax) {
-                    targetMax = tmp;
-                }
+                curMaxProfit = Math.max(curMaxProfit, afterMax - prices[i]);
             }
-            afterMaxProfit[i] = targetMax;
+            afterMaxProfit[i] = curMaxProfit;
         }
-        int ans = afterMaxProfit[0];
+        int ans = 0;
         for (int i = 0, end = prices.length - 1; i < end; i++) {
-            int tmp = preMaxProfit[i] + afterMaxProfit[i + 1];
-            if (tmp > ans) {
-                ans = tmp;
-            }
+            ans = Math.max(ans, beforeMaxProfit[i] + afterMaxProfit[i + 1]);
         }
         return ans;
     }

@@ -16,6 +16,7 @@ public class IncreasingTriplet {
          * 核心在这，diffLengthTailSmallest[i] 表示遍历到目前为止，出现的长度为 i 的递增子序列的末尾元素最小值
          * 反证法很容易证明，diffLengthTailSmallest 递增
          * 不要记录目前的最长递增子序列是什么，而是记录目前每个长度下，最长递增子序列末尾是什么
+         * 与最长递增子序列问题一样
          */
 
         int[] diffLengthTailSmallest = new int[3];

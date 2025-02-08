@@ -12,12 +12,12 @@ import java.util.List;
 public class ThreeNumSum {
 
     public List<List<Integer>> threeNumSum(int[] nums, int target) {
-        List<List<Integer>> list = new LinkedList<>();
+        List<List<Integer>> ans = new LinkedList<>();
         if (nums == null || nums.length < 3) {
-            return list;
+            return ans;
         }
         Arrays.sort(nums);
-        for (int i = 0, end = nums.length - 2; i < end; i++) {
+        for (int i = 0; i < nums.length; i++) {
             int low = i + 1;
             int high = nums.length - 1;
             while (low < high) {
@@ -28,21 +28,21 @@ public class ThreeNumSum {
                     high--;
                 } else {
                     List<Integer> cur = Arrays.asList(nums[i], nums[low], nums[high]);
-                    list.add(cur);
-                    while (low + 1 < high && nums[low] == nums[low + 1]) {
+                    ans.add(cur);
+                    while (low < high && nums[low] == nums[low + 1]) {
                         low++;
                     }
-                    while (high - 1 > low && nums[high] == nums[high - 1]) {
+                    while (high > low && nums[high] == nums[high - 1]) {
                         high--;
                     }
                     low++;
                     high--;
                 }
             }
-            while (i + 1 < end && nums[i] == nums[i + 1]) {
+            while (i + 1 < nums.length && nums[i] == nums[i + 1]) {
                 i++;
             }
         }
-        return list;
+        return ans;
     }
 }

@@ -11,18 +11,19 @@ public class LowestCommonAncestor {
     /**
      * 无法处理给定数值不在树中的情况，因为找到一个值就返回
      */
-    public TreeNode dfs1(TreeNode root, TreeNode a, TreeNode b) {
+    public TreeNode containAtLeastOne(TreeNode root, TreeNode a, TreeNode b) {
         if (root == null || root == a || root == b) {
             return root;
         }
-        TreeNode left = dfs1(root.left, a, b);
-        TreeNode right = dfs1(root.right, a, b);
+        TreeNode left = containAtLeastOne(root.left, a, b);
+        TreeNode right = containAtLeastOne(root.right, a, b);
         if (left == null) {
             return right;
         }
         if (right == null) {
             return left;
         }
+        // 左右都不空，一定是 root
         return root;
     }
 

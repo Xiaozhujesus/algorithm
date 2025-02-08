@@ -1,7 +1,9 @@
 package priv.wz.hash;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 给定两个字符串 s 和 t，判断它们是否是同构的。
@@ -45,5 +47,34 @@ public class Isomorphic {
             }
         }
         return true;
+    }
+
+    public boolean isIsomorphic2(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        Map<Character, Character> mapst = new HashMap<>();
+        Set<Character> set = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            char cs = s.charAt(i);
+            char ct = t.charAt(i);
+            if (mapst.containsKey(cs)) {
+                if (mapst.get(cs) != ct) {
+                    return false;
+                }
+            } else {
+                if (set.contains(ct)) {
+                    return false;
+                }
+                mapst.put(cs, ct);
+                set.add(ct);
+            }
+
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Isomorphic().isIsomorphic2("badc", "baba"));
     }
 }

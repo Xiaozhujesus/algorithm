@@ -31,6 +31,7 @@ public class StackWithMin {
         return list.stream().mapToInt(i -> i).toArray();
     }
 
+    // 只要栈确定了，当前栈对应的最小就是确定的，不会改变，只需用另一个栈记录就可以了
     class MyStack {
         Stack<Integer> stack = new Stack<>();
         Stack<Integer> min = new Stack<>();
@@ -54,6 +55,7 @@ public class StackWithMin {
         }
     }
 
+    // 上面你会发现，min 栈一定是递减的，因此可以压缩
     class MyStack2 {
         Stack<Integer> stack = new Stack<>();
         Stack<MinWithFreq> min = new Stack<>();

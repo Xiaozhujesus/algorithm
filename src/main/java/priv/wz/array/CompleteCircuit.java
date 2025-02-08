@@ -31,7 +31,7 @@ package org.practice.array;
  */
 
 public class CompleteCircuit {
-    public int f(int[] gas, int[] cost) {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
         int start = 0, acc = 0, total = 0;
         for (int i = 0; i < gas.length; i++) {
             acc += (gas[i] - cost[i]);
@@ -54,7 +54,7 @@ public class CompleteCircuit {
  * 都到达不了 F 站。 因为既然 B 站能到达 C, D, E 几个站， 那么到达的时候，汽油量一定是大于等于 0 的。这时候再从 C, D, E 出发，
  * 汽油量实际上大于等于直接从这几个站出发的汽油量。因此，既然从 B 站到不了 F 站出发， 那从 C, D, E 出发也到不了 F 站。因此，
  * 我们可以直接跳过 C, D, E 这几个站，而直接以 F 站为起点
- *
+ * <p>
  * gas-cost为积累量，积累量为正说明可以到达，为负说明不可以
  * 相当于在一个积累量的数组里从一个点开始找连续序列和为正的序列，则转换成在序列里找很多和为正的子序列且总和要大于0
  */

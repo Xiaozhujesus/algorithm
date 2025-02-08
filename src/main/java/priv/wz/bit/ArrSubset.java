@@ -1,7 +1,8 @@
-package org.practice.bit;
+package priv.wz.bit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 拿res中已经存在的元素和新的组合，然后重新放入res中，先给res中放入一个空元素，然后通过空元素和S中第一个元素结合放入res中，以此类推，
@@ -30,12 +31,12 @@ public class ArrSubset {
 
 
     // 位运算
-    public ArrayList<ArrayList<Integer>> subsets2(int[] s) {
+    public List<List<Integer>> subsets2(int[] s) {
         int n = s.length;
         int max = 1 << n;
-        ArrayList<ArrayList<Integer>> result = new ArrayList<>(n);
+        List<List<Integer>> result = new ArrayList<>(n);
         for (int i = 0; i < max; i++) {
-            ArrayList<Integer> tmp = new ArrayList<>();
+            List<Integer> tmp = new ArrayList<>();
             int idx = 0;
             int j = i;
             while (j > 0) {

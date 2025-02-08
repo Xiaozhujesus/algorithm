@@ -22,59 +22,60 @@ public class CoinChange {
         if (amount == 0) {
             return 0;
         }
-        this.dp = new int[amount];
+        this.dp = new int[amount + 1];
         this.coins = coins;
-        return util(amount);
+        return dp(amount);
     }
 
-    private int util(int amount) {
-        if (dp[amount - 1] != 0) {
-            return dp[amount - 1];
+    private int dp(int amount) {
+        if (dp[amount] != 0) {
+            return dp[amount];
         }
         int min = Integer.MAX_VALUE;
-        for (int i : coins) {
-            if (i < amount) {
-                int tmp = util(amount - i);
+        for (int coin : coins) {
+            if (coin < amount) {
+                int tmp = dp(amount - coin);
                 if (tmp != -1 && tmp < min) {
                     min = tmp;
                 }
-            } else if (i == amount) {
-                dp[amount - 1] = 1;
+            } else if (coin == amount) {
+                dp[amount] = 1;
                 return 1;
             }
         }
-        dp[amount - 1] = min == Integer.MAX_VALUE ? -1 : min + 1;
-        return dp[amount - 1];
+        dp[amount] = min == Integer.MAX_VALUE ? -1 : min + 1;
+        return dp[amount];
     }
 
     /**
      * 斐波那契数列
      */
-    private int util2(int[] coins, int amount) {
+    private int dp2(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
         int[] dp = new int[amount + 1];
 
-        for (int i = 1; i <= amount; i++) {
+        for (int curAmount = 1; curAmount <= amount; curAmount++) {
             int min = -1;
-            boolean init = false;
             for (int coin : coins) {
-                if (coin < i && dp[i - coin] != 0) {
-                    if (!init) {
-                        min = dp[i - coin];
-                        init = true;
-                    } else if (dp[i - coin] < min) {
-                        min = dp[i - coin];
+                if (coin < curAmount && dp[curAmount - coin] != 0) {
+                    if (min == -1) {
+                        min = dp[curAmount - coin];
+                    } else {
+                        min = Math.min(dp[curAmount - coin], min);
                     }
-                } else if (coin == i) {
+                } else if (coin == curAmount) {
                     min = 0;
                     break;
                 }
             }
-            dp[i] = min + 1;
+            dp[curAmount] = min + 1;
         }
         return dp[amount] == 0 ? -1 : dp[amount];
     }
 
     public static void main(String[] args) {
-        System.out.println(new CoinChange().util2(new int[]{2}, 11));
+        System.out.println(new CoinChange().dp2(new int[]{2}, 11));
     }
 }

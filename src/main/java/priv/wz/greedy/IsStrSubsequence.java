@@ -12,15 +12,27 @@ public class IsStrSubsequence {
         if (s.equals("")) {
             return true;
         }
-        int sindex = 0;
-        int slen = s.length();
-        for (int i = 0,tlen = t.length(); i < tlen; i++) {
-            if (s.charAt(sindex) == t.charAt(i)) {
-                if ((++sindex) == slen) {
-                    return true;
-                }
+        int tindex = 0;
+        for (int i = 0; i < s.length(); i++) {
+            while (tindex < t.length() && t.charAt(tindex) != s.charAt(i)) {
+                tindex++;
             }
+            if (tindex == t.length()) {
+                return false;
+            }
+            tindex++;
         }
-        return false;
+        return true;
+
+//        int sindex = 0;
+//        int slen = s.length();
+//        for (int i = 0,tlen = t.length(); i < tlen; i++) {
+//            if (s.charAt(sindex) == t.charAt(i)) {
+//                if ((++sindex) == slen) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
     }
 }

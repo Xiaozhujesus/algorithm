@@ -26,4 +26,24 @@ public class RotateN {
         }
         System.arraycopy(tmp, 0, nums, 0, r);
     }
+
+    public void rotate2(int[] nums, int k) {
+        if (nums == null || nums.length < 2 || k == 0) {
+            return;
+        }
+        int r = k % nums.length;
+        swap(nums, 0, nums.length - 1);
+        swap(nums, 0, r - 1);
+        swap(nums, r, nums.length - 1);
+    }
+
+    private void swap(int[] arr, int i, int j) {
+        while (i < j) {
+            int tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+            i++;
+            j--;
+        }
+    }
 }

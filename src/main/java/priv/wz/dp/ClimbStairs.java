@@ -17,12 +17,15 @@ public class ClimbStairs {
 
     // 上面不就是斐波那契数列么
     public int climb(int n) {
-        int a = 1, b = 1, c = 2;
-        for (int i = 2; i <= n; i++) {
+        if (n < 3) {
+            return n;
+        }
+        int a = 1, b = 2, c = 3;
+        for (int i = 3; i <= n; i++) {
             c = a + b;
             a = b;
             b = c;
         }
-        return c;
+        return b;
     }
 }

@@ -69,4 +69,34 @@ public class Flatten {
         }
         inOrder(root.right);
     }
+
+    /**
+     * 给你二叉树的根结点 root ，请你将它展开为一个单链表：
+     * 展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
+     * 展开后的单链表应该与二叉树先序遍历顺序相同。
+     */
+    private void preOrder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        root.left = null;
+        if (pre != null) {
+            pre.right = root;
+        }
+        pre = root;
+        preOrder(left);
+        preOrder(right);
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(5);
+        root.left.left = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        root.right.right = new TreeNode(6);
+        new Flatten().preOrder(root);
+    }
 }

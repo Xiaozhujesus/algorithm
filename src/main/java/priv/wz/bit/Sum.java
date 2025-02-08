@@ -1,7 +1,7 @@
-package org.practice.bit;
+package priv.wz.bit;
 
 /**
- * 不使用运算符 + 和 - ​​​​​​​，计算两整数 ​​​​​​​a 、b ​​​​​​​之和
+ * 不使用运算符 + 和 - ，计算两整数 a 、b 之和
  */
 public class Sum {
     public int f(int a, int b) {

@@ -6,6 +6,8 @@ import java.util.Stack;
  * 二叉树的最大深度
  */
 public class MaxDepth {
+    private int ans;
+
     //递归
     public int maxDepth(TreeNode root) {
         if (root == null) {
@@ -14,6 +16,15 @@ public class MaxDepth {
         int l = maxDepth(root.left);
         int r = maxDepth(root.right);
         return Math.max(l, r) + 1;
+    }
+
+    public void dfs1(TreeNode root, int depth) {
+        if (root == null) {
+            ans = Math.max(depth, ans);
+            return;
+        }
+        dfs1(root.left, depth + 1);
+        dfs1(root.right, depth + 1);
     }
 
     /**

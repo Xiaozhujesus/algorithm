@@ -1,7 +1,5 @@
 package priv.wz.greedy;
 
-import java.util.Arrays;
-
 /**
  * 无向图的所有节点上 m 种色，要求相邻节点颜色不同，可以的话返回上色方案，否则返回 false
  * 感觉这题没有回溯，因为某一点上色1不可以，那么上其他色也不行

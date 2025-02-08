@@ -6,7 +6,7 @@ package priv.wz.tree;
 public class IsValidBST {
 
     // 中序遍历，比较相邻两个节点
-    private TreeNode pre = null;
+    private TreeNode pre;
 
     public boolean isValidBST2(TreeNode root) {
         return inOrder(root);
@@ -16,15 +16,14 @@ public class IsValidBST {
         if (root == null) {
             return true;
         }
-        if (inOrder(root.left)) {
-            if (pre != null && root.val < pre.val) {
-                return false;
-            } else {
-                pre = root;
-                return inOrder(root.right);
-            }
+        if (!inOrder(root.left)) {
+            return false;
         }
-        return false;
+        if (pre != null && root.val <= pre.val) {
+            return false;
+        }
+        pre = root;
+        return inOrder(root.right);
     }
 
     // 递归

@@ -37,11 +37,7 @@ public class RangeMerge {
             }
         }
         l.add(new int[]{start, end});
-        int[][] ret = new int[l.size()][2];
-        for (int i = 0; i < l.size(); i++) {
-            ret[i] = l.get(i);
-        }
-        return ret;
+        return l.toArray(new int[l.size()][]);
     }
 
     // List形式

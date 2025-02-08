@@ -79,12 +79,35 @@ public class BinarySearch {
             } else {
                 if (mid == 0 || arr[mid - 1] < target) {
                     return mid;
-                } else {
-                    high = mid - 1;
                 }
+                high = mid - 1;
             }
         }
         return -1;
+    }
+
+    /**
+     * 同上
+     * 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+     */
+    public int searchFirstGreatEqu(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        // 左闭右开
+        int low = 0, high = nums.length, mid;
+        while (low < high) {
+            mid = (low + high) / 2;
+            if (nums[mid] < target) {
+                low = mid + 1;
+            } else {
+                if (mid == 0 || nums[mid - 1] < target) {
+                    return mid;
+                }
+                high = mid;
+            }
+        }
+        return low;
     }
 
     /**

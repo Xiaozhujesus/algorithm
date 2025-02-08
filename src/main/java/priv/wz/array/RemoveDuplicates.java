@@ -26,4 +26,22 @@ public class RemoveDuplicates {
         }
         return end;
     }
+
+    /**
+     * 只出现一次
+     */
+    public int removeDuplicates1(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int end = 0, curValue = nums[0], curPos = 0;
+        while (curPos < nums.length) {
+            curValue = nums[curPos];
+            nums[end++] = curValue;
+            while (curPos < nums.length && nums[curPos] == curValue) {
+                curPos++;
+            }
+        }
+        return end;
+    }
 }

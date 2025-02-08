@@ -1,8 +1,6 @@
-package org.practice.array;
+package priv.wz.stack;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * 给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。
@@ -22,52 +20,37 @@ import java.util.Arrays;
  * 1  3  -1  -3  5 [3  6  7]      7
  */
 public class SlidingWindowMaxValue {
-    ArrayDeque<Integer> deq = new ArrayDeque<Integer>();
-    int[] nums;
 
-    /**
-     * 假设队列中第一个比nums[i]大的数的索引为first，那么在nums中，first和i之间不会有比nums[i]大的数，因为如果有，那么在处理该索引时候
-     * first就会被清理掉而不存在了
-     *
-     * @param i
-     * @param k
-     */
-    public void clean_deque(int i, int k) {
-        // remove indexes of elements not from sliding window
-        if (!deq.isEmpty() && deq.getFirst() == i - k)
-            deq.removeFirst();
-
-        // remove from deq indexes of all elements
-        // which are smaller than current element nums[i]
-        while (!deq.isEmpty() && nums[i] > nums[deq.getLast()]) {
-            deq.removeLast();
-        }
-    }
 
     public int[] maxSlidingWindow(int[] nums, int k) {
         int n = nums.length;
-        if (n * k == 0) return new int[0];
-        if (k == 1) return nums;
-
-        // init deque and output
-        this.nums = nums;
-        int max_idx = 0;
-        for (int i = 0; i < k; i++) {
-            clean_deque(i, k);
-            deq.addLast(i);
-            // compute max in nums[:k]
-            if (nums[i] > nums[max_idx]) max_idx = i;
+        /**
+         * 队列中存储的是索引，索引递增，索引对应的元素值在队列中递减，如果 nums[i] 比队列尾的元素值大，那么队列尾
+         * 的元素不可能是包含 nums[i] 的滑动窗口的最大值，nums[i] 更有可能；deque 就是维护滑动窗口最大值的结构
+         * 这里没用优先队列
+         */
+        Deque<Integer> deque = new LinkedList<>();
+        for (int i = 0; i < k; ++i) {
+            while (!deque.isEmpty() && nums[i] >= nums[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            deque.offerLast(i);
         }
-        int[] output = new int[n - k + 1];
-        output[0] = nums[max_idx];
 
-        // build output
-        for (int i = k; i < n; i++) {
-            clean_deque(i, k);
-            deq.addLast(i);
-            output[i - k + 1] = nums[deq.getFirst()];
+        int[] ans = new int[n - k + 1];
+        ans[0] = nums[deque.peekFirst()];
+        for (int i = k; i < n; ++i) {
+            while (!deque.isEmpty() && nums[i] >= nums[deque.peekLast()]) {
+                deque.pollLast();
+            }
+            deque.offerLast(i);
+            // 由于滑动窗口往前移动，窗口最大值可能被移出去
+            if (deque.peekFirst() == i - k) {
+                deque.pollFirst();
+            }
+            ans[i - k + 1] = nums[deque.peekFirst()];
         }
-        return output;
+        return ans;
     }
 
 
@@ -117,8 +100,6 @@ public class SlidingWindowMaxValue {
 //        }
 //        return ret;
 //    }
-
-
     public ArrayList<Integer> maxWindow(int[] nums, int k) {
         int n = nums.length;
         if (n * k == 0 || n < k) {

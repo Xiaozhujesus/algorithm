@@ -6,6 +6,7 @@ import java.util.LinkedList;
  * 给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少
  * <p>
  * 与硬币问题一样
+ * 与爬楼梯问题一样，只不过楼梯的 1、2 变成了 1、4、9
  */
 public class NumSquares {
 
@@ -14,7 +15,6 @@ public class NumSquares {
 
     public int init(int n) {
         dp = new int[n + 1];
-        dp[1] = 1;
         return util(n);
     }
 

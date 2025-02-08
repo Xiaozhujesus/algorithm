@@ -36,4 +36,26 @@ public class RemoveElement {
         arr[i] = arr[j];
         arr[j] = tmp;
     }
+
+
+    public int removeElement1(int[] nums, int val) {
+        if (nums == null) {
+            return 0;
+        }
+        int count = 0;
+        for (int i : nums) {
+            if (i == val) {
+                count++;
+            }
+        }
+        int i = 0, j = 0;
+        while (j != nums.length) {
+            if (nums[j] != val) {
+                nums[i] = nums[j];
+                i++;
+            }
+            j++;
+        }
+        return nums.length - count;
+    }
 }

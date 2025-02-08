@@ -1,4 +1,4 @@
-package org.practice.array;
+package priv.wz.array;
 
 /**
  * 有一个NxN整数矩阵，请编写一个算法，将矩阵顺时针旋转90度。
@@ -10,6 +10,7 @@ package org.practice.array;
  * 返回：[[7,4,1],[8,5,2],[9,6,3]]
  */
 public class RotateMetric2 {
+    // 非原地旋转
     public int[][] rotateMatrix(int[][] mat, int n) {
         // 找规律：mat[i][j]被旋转到了mat[j][n-i-1]的位置
         int[][] temp = new int[n][n];
@@ -20,5 +21,26 @@ public class RotateMetric2 {
             }
         }
         return temp;
+    }
+
+    // 原地旋转
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                swap(matrix, i, j, j, i);
+            }
+        }
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = 0; j < n; j++) {
+                swap(matrix, j, i, j, n - 1 - i);
+            }
+        }
+    }
+
+    void swap(int[][] matrix, int a, int b, int c, int d) {
+        int tmp = matrix[a][b];
+        matrix[a][b] = matrix[c][d];
+        matrix[c][d] = tmp;
     }
 }

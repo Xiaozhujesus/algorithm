@@ -53,12 +53,46 @@ public class DecodeString {
     }
 
     // 其实用一个栈也可以解决
-    public String decodeString1(String s) {
-        return "";
-    }
-
     public String decodeString2(String s) {
-        return "";
+        if (s == null) {
+            return null;
+        }
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != ']') {
+                stack.push(s.charAt(i));
+                continue;
+            }
+            StringBuilder sb1 = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+
+            while (stack.peek() != '[') {
+                sb1.append(stack.pop());
+            }
+            stack.pop();
+            if (stack.isEmpty()) {
+                return sb1.reverse().toString();
+            }
+
+            while (!stack.isEmpty() && Character.isDigit(stack.peek())) {
+                sb2.append(stack.pop());
+            }
+            int count = Integer.parseInt(sb2.reverse().toString());
+            String word = sb1.reverse().toString();
+            StringBuilder words = new StringBuilder();
+            while (count-- != 0) {
+                words.append(word);
+            }
+            String tmp = words.toString();
+            for (int j = 0; j < tmp.length(); j++) {
+                stack.push(tmp.charAt(j));
+            }
+        }
+        StringBuilder ans = new StringBuilder();
+        while (!stack.isEmpty()) {
+            ans.append(stack.pop());
+        }
+        return ans.reverse().toString();
     }
 
 

@@ -49,6 +49,11 @@ public class DFS {
         stack.push(root);
         while (!stack.isEmpty()) {
             TreeNode cur = stack.pop();
+            /**
+             * 对应递归中的
+             * System.out.println(root.val);
+             * preOrder(root.left);
+             */
             while (cur != null) {
                 System.out.println(cur.val);
                 // null 也无所谓
@@ -126,7 +131,6 @@ public class DFS {
                 stack.push(tmp);
                 cur = tmp.node.right;
             }
-
         }
     }
 

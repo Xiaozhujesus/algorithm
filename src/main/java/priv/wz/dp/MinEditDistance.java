@@ -10,7 +10,7 @@ package priv.wz.dp;
  * 替换一个字符
  */
 public class MinEditDistance {
-    public int solution(String s1, String s2) {
+    public int minDistance(String s1, String s2) {
         if (s1 == null || s1.length() == 0) {
             if (s2 == null) {
                 return 0;
@@ -44,12 +44,8 @@ public class MinEditDistance {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
                     int min = dp[i - 1][j - 1];
-                    if (dp[i - 1][j] < min) {
-                        min = dp[i - 1][j];
-                    }
-                    if (dp[i][j - 1] < min) {
-                        min = dp[i][j - 1];
-                    }
+                    min = Math.min(min, dp[i - 1][j]);
+                    min = Math.min(min, dp[i][j - 1]);
                     dp[i][j] = min + 1;
                 }
             }

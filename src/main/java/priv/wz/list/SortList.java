@@ -17,16 +17,16 @@ public class SortList {
             return head;
         }
         // 快慢指针找中点
-        ListNode p = head, q = head, pre = null;
-        while (q != null && q.next != null) {
-            pre = p;
-            p = p.next;
-            q = q.next.next;
+        ListNode slow = head, fast = head, pre = null;
+        while (fast != null && fast.next != null) {
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next.next;
         }
         // 断链操作
         pre.next = null;
         ListNode l = mergeSort(head);
-        ListNode r = mergeSort(p);
+        ListNode r = mergeSort(slow);
         return merge(l, r);
     }
 
@@ -36,12 +36,12 @@ public class SortList {
         while (l != null && r != null) {
             if (l.val <= r.val) {
                 cur.next = l;
-                cur = cur.next;
                 l = l.next;
+                cur = cur.next;
             } else {
                 cur.next = r;
-                cur = cur.next;
                 r = r.next;
+                cur = cur.next;
             }
         }
         if (l != null) {

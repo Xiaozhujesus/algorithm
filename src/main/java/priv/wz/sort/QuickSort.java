@@ -52,7 +52,7 @@ public class QuickSort {
         l--;
         int key = arr[r];
         int keyIndex = r;
-        // 循环不变式，arr[l] < key，arr[r] >= key
+        // 循环不变式，每次循环开始都有：arr[l] < key，arr[r] >= key
         while (l < r) {
             while (l < r && arr[r] >= key) {
                 r--;

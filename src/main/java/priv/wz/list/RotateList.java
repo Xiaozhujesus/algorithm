@@ -10,7 +10,7 @@ package priv.wz.list;
  * 输出: 2->0->1->NULL
  */
 public class RotateList {
-    public ListNode solution(ListNode head, int k) {
+    public ListNode rotateRight(ListNode head, int k) {
         if (head == null || head.next == null || k == 0) {
             return head;
         }

@@ -7,7 +7,7 @@ import java.util.Set;
  * 给定一个数组arr，返回arr的最长无的重复子串的长度(无重复指的是所有数字都不相同)。
  */
 public class LongestUnRepeatSubArr {
-    public int f(String s) {
+    public int lengthOfLongestSubstring(String s) {
         if (s == null) {
             return 0;
         }
@@ -30,6 +30,6 @@ public class LongestUnRepeatSubArr {
     }
 
     public static void main(String[] args) {
-        System.out.println(new LongestUnRepeatSubArr().f("abba"));
+        System.out.println(new LongestUnRepeatSubArr().lengthOfLongestSubstring("abba"));
     }
 }

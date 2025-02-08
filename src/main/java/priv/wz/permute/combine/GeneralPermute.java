@@ -36,6 +36,7 @@ public class GeneralPermute {
 
     /**
      * 回溯法搜索，index 表示当前走到 cur 的那个位置了
+     * 搜素的关键在于对元素的种类修改，保证结果不重复
      *
      * @param index
      */

@@ -10,20 +10,20 @@ public class SortedArrayToBST {
         if (nums == null || nums.length == 0) {
             return null;
         }
-        return util(nums, 0, nums.length - 1);
+        return build(nums, 0, nums.length);
     }
 
-    private TreeNode util(int[] arr, int low, int high) {
-        if (low > high) {
+    private TreeNode build(int[] arr, int low, int high) {
+        if (low == high) {
             return null;
         }
-        if (low == high) {
+        if (low == high + 1) {
             return new TreeNode(arr[low]);
         }
         int mid = (low + high) / 2;
         TreeNode root = new TreeNode(arr[mid]);
-        root.left = util(arr, low, mid - 1);
-        root.right = util(arr, mid + 1, high);
+        root.left = build(arr, low, mid);
+        root.right = build(arr, mid + 1, high);
         return root;
     }
 }

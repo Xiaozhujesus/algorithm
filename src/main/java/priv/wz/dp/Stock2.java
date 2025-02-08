@@ -26,7 +26,7 @@ public class Stock2 {
     /**
      * 空间优化
      */
-    public int maxProfit2(int[] prices){
+    public int maxProfit2(int[] prices) {
         int preHold = -prices[0];
         int preSold = 0;
         for (int i = 1; i < prices.length; i++) {
@@ -48,4 +48,21 @@ public class Stock2 {
         }
         return ans;
     }
+
+    /**
+     * 整数 fee 代表了交易股票的手续费用，买入再卖出算一笔费用
+     */
+    public int maxProfit(int[] prices, int fee) {
+        int ans = 0;
+        // 第i天获得的最大利润，dp[0][i] 表示未持有股票，dp[1][i] 表示持有股票
+        int[][] dp = new int[2][prices.length];
+        dp[0][0] = 0;
+        dp[1][0] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dp[0][i] = Math.max(dp[0][i - 1], dp[1][i - 1] + prices[i] - fee);
+            dp[1][i] = Math.max(dp[0][i - 1] - prices[i], dp[1][i - 1]);
+        }
+        return dp[0][prices.length - 1];
+    }
+    // 空间可以优化
 }

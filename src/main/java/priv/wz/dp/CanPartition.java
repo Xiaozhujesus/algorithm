@@ -20,14 +20,18 @@ package priv.wz.dp;
 public class CanPartition {
     // 背包问题
     public boolean canPartition1(int[] nums) {
-        int sum = 0;
+        int sum = 0, max = 0;
         for (int i : nums) {
             sum += i;
+            max = Math.max(max, i);
         }
         if (sum % 2 != 0) {
             return false;
         }
         sum /= 2;
+        if (max > sum) {
+            return false;
+        }
         // dp[i][j] 表示前 i 个数中能否找到和为 j 的组合
         boolean[][] dp = new boolean[nums.length][sum + 1];
         for (int i = 0; i < nums.length; i++) {
