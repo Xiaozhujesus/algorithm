@@ -3,10 +3,6 @@ package priv.wz.permute.combine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.*;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 /**
@@ -18,6 +14,7 @@ public class PermuteUnique {
         return util(Arrays.stream(nums).boxed().collect(Collectors.toList()));
     }
 
+    // 递归，arr 有序，返回 arr 的全排列
     private List<List<Integer>> util(List<Integer> arr) {
         List<List<Integer>> ans = new ArrayList<>();
         if (arr.size() == 1) {
@@ -25,6 +22,7 @@ public class PermuteUnique {
             return ans;
         }
         for (int i = 0; i < arr.size(); i++) {
+            // 这里其实就是通用排列中所说的：排列的关键是要保证每次循环位置 i 的元素不同，这样结果才能不同
             if (i == 0 || !arr.get(i).equals(arr.get(i - 1))) {
                 int first = arr.get(i);
                 List<Integer> tmp = new ArrayList<>(arr);
@@ -39,44 +37,70 @@ public class PermuteUnique {
         return ans;
     }
 
-    /**
-     * 该题是正常排练的变形，与正常排列不同的是：每一轮确定 cur 位置值的 for 循环选的值需要保证不能与
-     * 之前选的重复而由于回溯搜索的特点，每次 for 循环都会恢复之前选的值的 visit 标志位，因此
-     * i > 0 && nums[i] == nums[i - 1] && !visit[i - 1]) 这种情况一定是当前循环上次选过的
-     * 如下算法适用于从 nums 中选出个数小于 nums.length 个数的排列
-     */
-    private int[] nums;
-    private boolean[] visit;
-    private int[] perm;
-    private List<List<Integer>> ans;
+    public static void main(String[] args) {
+        System.out.println(new PermuteUnique().permuteUnique(new int[]{1, 2, 2, 2}));
+    }
 
-    public List<List<Integer>> permuteUnique2(int[] nums) {
-        this.nums = nums;
-        ans = new ArrayList<>();
-        perm = new int[nums.length];
-        visit = new boolean[nums.length];
-        Arrays.sort(nums);
-        backtrack(0);
+
+    /**
+     * 给定一个不含重复数字的数组 nums ，返回其所有可能的全排列
+     */
+    // visit 数组相当于通用排列中记录每个元素剩余多少，若允许数组中包含重复元素，还需要先对数组排序
+    private boolean[] visit;
+    private int[] item;
+    private int[] cur;
+    private List<List<Integer>> ans = new ArrayList<>();
+
+    public List<List<Integer>> permute(int[] nums) {
+
+        if (nums == null || nums.length == 0) {
+            return ans;
+        }
+        this.item = nums;
+        this.cur = new int[nums.length];
+        this.visit = new boolean[nums.length];
+        backtrace(0);
         return ans;
     }
 
-    private void backtrack(int cur) {
-        if (cur == nums.length) {
-            ans.add(Arrays.stream(perm).boxed().collect(Collectors.toList()));
+    private void backtrace(int i) {
+        if (i == item.length) {
+            ans.add(Arrays.stream(cur).boxed().collect(Collectors.toList()));
             return;
         }
-        for (int i = 0; i < nums.length; ++i) {
-            if (visit[i] || (i > 0 && nums[i] == nums[i - 1] && !visit[i - 1])) {
-                continue;
+        for (int j = 0; j < item.length; j++) {
+            if (!visit[j]) {
+                cur[i] = item[j];
+                visit[j] = true;
+                backtrace(i + 1);
+                visit[j] = false;
             }
-            perm[cur] = nums[i];
-            visit[i] = true;
-            backtrack(cur + 1);
-            visit[i] = false;
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(new PermuteUnique().permuteUnique2(new int[]{1, 2, 2, 2}));
+    /**
+     * 数组中元素不同时，swap 也可以，相当于数组本身就是 visit 数组，加上当前处理位置 index 就可以保证不重复
+     */
+    public List<List<Integer>> permute2(int[] nums) {
+        util(nums, 0);
+        return ans;
+    }
+
+    private void util(int[] nums, int index) {
+        if (index == nums.length) {
+            ans.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
+            return;
+        }
+        for (int i = index; i < nums.length; i++) {
+            swap(nums, index, i);
+            util(nums, index + 1);
+            swap(nums, index, i);
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
     }
 }

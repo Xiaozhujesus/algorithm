@@ -30,4 +30,22 @@ public class CanJump {
         }
         return closedCan == 1;
     }
+
+    public boolean canJump2(int[] nums) {
+        if (nums == null || nums.length <= 1) {
+            return true;
+        }
+        boolean flag[] = new boolean[nums.length];
+        flag[0] = true;
+        for (int i = 0; i < nums.length; i++) {
+            if (flag[i]) {
+                for (int j = 1; j <= nums[i]; j++) {
+                    if (i + j < flag.length) {
+                        flag[i + j] = true;
+                    }
+                }
+            }
+        }
+        return flag[nums.length - 1];
+    }
 }
