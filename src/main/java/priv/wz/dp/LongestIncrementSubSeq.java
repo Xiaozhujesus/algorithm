@@ -46,38 +46,35 @@ public class LongestIncrementSubSeq {
         dp[0] = arr[0];
         history[0] = 0;
         for (int i = 1; i < arr.length; i++) {
-            if (arr[i] > dp[lastP]) {
-                lastP++;
-                dp[lastP] = arr[i];
-                history[i] = lastP;
-            } else {
-                // 在 dp 中找第一大于等于 arr[i] 的元素并用 arr[i] 替换
-                int l = 0, r = lastP, mid, target = lastP + 1; // 默认没有，arr[i] 在最右侧；但是根据上面的if判断，这里0~len中肯定有大于等于的
-                while (l <= r) {
-                    mid = (l + r) / 2;
-                    if (dp[mid] < arr[i]) {
-                        l = mid + 1;
+            // 在 dp 中找第一大于等于 arr[i] 的元素并用 arr[i] 替换
+            int low = 0, high = lastP, mid, target = lastP + 1; // 默认没有，arr[i] 在最右侧；
+            while (low <= high) {
+                mid = (low + high) / 2;
+                if (dp[mid] < arr[i]) {
+                    low = mid + 1;
+                } else {
+                    if (mid > 0 && dp[mid - 1] >= arr[i]) {
+                        high = mid - 1;
                     } else {
-                        if (mid > 0 && dp[mid - 1] >= arr[i]) {
-                            r = mid - 1;
-                        } else {
-                            target = mid;
-                            break;
-                        }
+                        target = mid;
+                        break;
                     }
                 }
-                dp[target] = arr[i];
-                history[i] = target;
             }
+            dp[target] = arr[i];
+            history[i] = target;
         }
         // return dp.size();
 
         // 具体的最长上升子序列
-        int[] res = new int[lastP+1];
+        int[] res = new int[lastP + 1];
         for (int i = arr.length - 1, j = lastP; j >= 0; --i) {
             if (history[i] == j) {
                 res[j--] = arr[i];
             }
+        }
+        for (int i = 0; i < arr.length; i++) {
+
         }
         return res;
     }

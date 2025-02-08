@@ -7,6 +7,38 @@ package priv.wz.search;
  * 每列的元素从上到下升序排列。
  */
 public class SearchMatrix {
+    public boolean search(int[][] matrix, int target) {
+        boolean horizon = true;
+        int row = 0, column = matrix[0].length - 1;
+        // 从右下往左上搜，或从左上往右下；若从左下或右上开始，写代码会发现循环方向不对
+        while (row < matrix.length && column >= 0) {
+            if (horizon) {
+                while (column >= 0 && matrix[row][column] > target) {
+                    column--;
+                }
+                if (column < 0) {
+                    return false;
+                }
+                if (matrix[row][column] == target) {
+                    return true;
+                }
+                horizon = false;
+            } else {
+                while (row < matrix.length && matrix[row][column] < target) {
+                    row++;
+                }
+                if (row == matrix.length) {
+                    return false;
+                }
+                if (matrix[row][column] == target) {
+                    return true;
+                }
+                horizon = true;
+            }
+        }
+        return false;
+    }
+
     public boolean searchMatrix(int[][] matrix, int target) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return false;
